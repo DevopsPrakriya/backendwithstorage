@@ -11,9 +11,11 @@ pool:
 
 steps:
 - task: TerraformInstaller@1
+  displayName: terraforminstall
   inputs:
     terraformVersion: 'latest'
 - task: TerraformTask@5
+  displayName: terraform init
   inputs:
     provider: 'azurerm'
     command: 'init'
@@ -23,16 +25,19 @@ steps:
     backendAzureRmContainerName: 'tfstatefile'
     backendAzureRmKey: 'terraform.tfstate'
 - task: TerraformTask@5
+  displayName: terraform validate
   inputs:
     provider: 'azurerm'
     command: 'validate'
 - task: TerraformTask@5
+  displayName: terraform plan
   inputs:
     provider: 'azurerm'
     command: 'plan'
     environmentServiceNameAzureRM: 'Azure subscription 1(2)(5878055b-ed6d-4f89-b493-40fc80beaded)'
 
 - task: TerraformTask@5
+  displayName: terrafrom apply
   inputs:
     provider: 'azurerm'
     command: 'apply'
