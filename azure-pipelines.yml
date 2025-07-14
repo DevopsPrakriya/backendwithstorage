@@ -1,47 +1,44 @@
 trigger:
-- main  # Jo bhi branch se pipeline run karni ho
+- main
 
 pool:
-  name:Default
+  name: Default
 
-jobs:
-- job: terraformbuild
-  displayName: 'Terraform Pipeline with Azure Backend'
-  steps:
-  - checkout: self
+variables:
+  TF_VERSION: '1.6.0'   # Specify Terraform version
 
-  # Step 1: Install Terraform
-  - task: TerraformInstaller@0
-    displayName: 'Install Terraform'
-    inputs:
-      terraformVersion: '1.6.6'  # Optional, you can change it
+steps:
+# Step 1: Install Terraform (optional if agent already has it)
+- task: TerraformInstaller@1
+  displayName: 'Install Terraform'
+  inputs:
+    terraformVersion: '$(TF_VERSION)'
 
-  # Step 2: Terraform Init with AzureRM backend
-  - task: TerraformTaskV1@0
-    displayName: 'Terraform Init'
-    inputs:
-      provider: 'azurerm'
-      command: 'init'
-      backendServiceArm: 'Azure subscription 1(5878055b-ed6d-4f89-b493-40fc80beaded)'
-      backendAzureRmResourceGroupName: 'swapnilpipeline'
-      backendAzureRmStorageAccountName: 'swapnilstr'
-      backendAzureRmContainerName: 'tfstatefile'
-      backendAzureRmKey: 'terraform.tfstate'
+# Step 2: Checkout repo
+- checkout: self
 
-  # Step 3: Terraform Plan
-  - task: TerraformTaskV1@0
-    displayName: 'Terraform Plan'
-    inputs:
-      provider: 'azurerm'
-      command: 'plan'
-      environmentServiceNameAzureRM: 'Azure subscription 1(5878055b-ed6d-4f89-b493-40fc80beaded)'
+# Step 3: Azure CLI - Terraform init, plan, apply
+- task: AzureCLI@2
+  displayName: 'Terraform Init, Plan & Apply'
+  inputs:
+    azureSubscription: 'tesla-infra'  # 👈 Your service connection name
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      echo "Terraform Version:"
+      terraform version
 
-  # Step 4: Terraform Apply (auto-approve)
-  - task: TerraformTaskV1@0
-    displayName: 'Terraform Apply'
-    inputs:
-      provider: 'azurerm'
-      command: 'apply'
-      environmentServiceNameAzureRM: 'Azure subscription 1(5878055b-ed6d-4f89-b493-40fc80beaded)'
-      args: '-auto-approve'
+      echo "Running terraform init..."
+      terraform init \
+        -backend-config="resource_group_name=swapnilpipeline" \
+        -backend-config="storage_account_name=swapnilstr" \
+        -backend-config="container_name=tfstatefile" \
+        -backend-config="key=terraform.tfstate"
 
+      echo "Running terraform plan..."
+      terraform plan -out=tfplan
+
+      echo "Running terraform apply..."
+      terraform apply -auto-approve tfplan
+
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
