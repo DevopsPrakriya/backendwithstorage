@@ -10,7 +10,7 @@ pool:
   name: Default
 
 stages:
-  - stage: terraform deploy
+  - stage: deploy
     displayName: terraform deploy
     jobs:
       - job: deploy
