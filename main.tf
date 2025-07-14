@@ -18,7 +18,7 @@ resource "azurerm_storage_account" "storage1" {
     account_replication_type = "LRS"
 }
 
-resource "azurerm_storage_account" "storage1" {
+resource "azurerm_storage_account" "storage2" {
     name                     = "b35arsstorage2"
     resource_group_name      = azurerm_resource_group.rg2.name
     location                 = azurerm_resource_group.rg2.location
