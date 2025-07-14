@@ -11,7 +11,7 @@ resource "azurerm_resource_group" "rg2" {
 }
 
 resource "azurerm_storage_account" "storage1" {
-    name                     = "arsstorage1"
+    name                     = "b35arsstorage1"
     resource_group_name      = azurerm_resource_group.rg1.name
     location                 = azurerm_resource_group.rg1.location
     account_tier             = "Standard"
