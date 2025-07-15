@@ -25,7 +25,7 @@ stages:
           inputs:
             provider: 'azurerm'
             command: 'init'
-            backendServiceArm: 'rakesh-sp'
+            backendServiceArm: 'amol-sc'
             backendAzureRmResourceGroupName: 'swapnilpipeline'
             backendAzureRmStorageAccountName: 'swapnilstr'
             backendAzureRmContainerName: 'tfstatefile'
@@ -36,7 +36,7 @@ stages:
           inputs:
             provider: 'azurerm'
             command: 'plan'
-            environmentServiceNameAzureRM: 'rakesh-sp'
+            environmentServiceNameAzureRM: 'amol-sc'
 
         - task: TerraformTask@5
           displayName: terraform apply
@@ -44,5 +44,5 @@ stages:
           inputs:
             provider: 'azurerm'
             command: 'apply'
-            environmentServiceNameAzureRM: 'rakesh-sp'
+            environmentServiceNameAzureRM: 'amol-sc'
 
