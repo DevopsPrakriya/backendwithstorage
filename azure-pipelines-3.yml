@@ -25,7 +25,7 @@ stages:
           inputs:
             provider: 'azurerm'
             command: 'init'
-            backendServiceArm: 'amol-sc'
+            backendServiceArm: 'swapnil-sc'
             backendAzureRmResourceGroupName: 'swapnilpipeline'
             backendAzureRmStorageAccountName: 'swapnilstr'
             backendAzureRmContainerName: 'tfstatefile'
@@ -36,7 +36,7 @@ stages:
           inputs:
             provider: 'azurerm'
             command: 'plan'
-            environmentServiceNameAzureRM: 'amol-sc'
+            environmentServiceNameAzureRM: 'swapnil-sc'
 
         - task: TerraformTask@5
           displayName: terraform apply
@@ -44,5 +44,5 @@ stages:
           inputs:
             provider: 'azurerm'
             command: 'apply'
-            environmentServiceNameAzureRM: 'amol-sc'
+            environmentServiceNameAzureRM: 'swapnil-sc'
 
