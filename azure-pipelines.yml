@@ -25,9 +25,11 @@ stages:
         displayName: initial stage
         steps:
         - task: TerraformInstaller@1
+          displayName: terraform installation
           inputs:
             terraformVersion: 'latest'
         - task: TerraformTask@5
+          displayName: init
           inputs:
             provider: 'azurerm'
             command: 'init'
@@ -37,6 +39,7 @@ stages:
             backendAzureRmContainerName: 'tfstatefile'
             backendAzureRmKey: 'terraform.tfstate'
         - task: TerraformTask@5
+          displayName: fmt
           inputs:
             provider: 'azurerm'
             command: 'custom'
@@ -44,14 +47,18 @@ stages:
             customCommand: 'fmt'
             environmentServiceNameAzureRM: 'navin-sc'
         - task: TerraformTask@5
+          displayName: validate
           inputs:
             provider: 'azurerm'
             command: 'validate'
         - task: TerraformTask@5
+          displayName: plan
           inputs:
             provider: 'azurerm'
             command: 'plan'
+            environmentServiceNameAzureRM: 'navin-sc'
         - task: TerraformTask@5
+          displayName: apply
           inputs:
             provider: 'azurerm'
             command: 'apply'
