@@ -43,7 +43,7 @@ stages:
 
         - task: TerraformTask@5
           displayName: terraform apply
-          # condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+          condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
           inputs:
             provider: 'azurerm'
             command: 'apply'
