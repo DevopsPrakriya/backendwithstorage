@@ -7,7 +7,7 @@ trigger:
 - main
 
 pool:
-  name: selfhosted-agent
+  name: swap-pract
 
 stages:
   - stage: deploy
