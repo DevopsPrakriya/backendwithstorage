@@ -4,7 +4,10 @@
 # https://aka.ms/yaml
 
 trigger:
-- main
+  branches:
+    include:
+      - main
+
 
 pool:
   name: swappract
@@ -40,7 +43,7 @@ stages:
 
         - task: TerraformTask@5
           displayName: terraform apply
-          # condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+          condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
           inputs:
             provider: 'azurerm'
             command: 'apply'
